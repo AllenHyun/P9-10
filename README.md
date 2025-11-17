@@ -8,7 +8,7 @@ María Cabrera Vérgez
 
 [- Vídeo de muestra](link)
 
-## Realizado en The Book Of Shaders
+### Realizado en The Book Of Shaders
 
 ## Tareas a realizar
 
@@ -20,7 +20,9 @@ En ambos casos, la documentación explicativa del shader debe incluir la motivac
 
 ## Índice de contenidos
 
-- [Ejemplo](#ejemplo)
+- [Motivación](#motivación)
+- [Desarrollo](#desarrollo)
+- [Webgrafía](#webgrafía)
   
 
 ## Tareas
