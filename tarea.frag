@@ -1,35 +1,4 @@
 #ifdef GL_ES
 precision mediump float;
 #endif
-
-uniform float u_time;
-uniform vec2 u_resolution;
-
-float h(vec2 p){return fract(sin(dot(p,vec2(0.720,0.680)))*43757.348);}
-
-void main(){
- vec2 st = gl_FragCoord.xy / u_resolution.xy;
- st = st*2.0 - 1.0;
-
- float a = atan(st.y, st.x);
- float r = length(st);
-
- float n = h(vec2(a*4. + u_time*.3, r*6.));
- float w = sin(a*12.064 + n*6.184 + u_time*2.0);
-
- float p = abs(fract((r + w*-0.080)*28.440) - 0.500);
-
- float m = smoothstep(0.776, -0.040, p);
-
- float t = fract(a*0.448 + r*-0.372 + u_time*-0.772)*7.323;
-
- vec3 c = vec3(
-   0.7 + 1.2*cos(t),          
-   0.7 + 0.568*cos(t+1.782),    
-   0.7 + 1.0*cos(t+3.348)     
- );
-
- vec3 finalColor = c * (0.3 + m*1.2);
-
- gl_FragColor = vec4(finalColor, 2.448);
-}
+uniform float u_time;uniform vec2 u_resolution;float h(vec2 p){return fract(sin(dot(p,vec2(.7,.6)))*4e4);}void main(){vec2 s=gl_FragCoord.xy/u_resolution*2.-1.;float a=atan(s.y,s.x),r=length(s);float n=h(vec2(a*4.+u_time*.3,r*5.));float w=sin(a*11.+n*6.+u_time*2.);float p=abs(fract((r-w*.07)*26.)-.5);float m=smoothstep(.8,-.05,p);float t=fract(a*.4-r*.35-u_time*.7)*7.;vec3 c=vec3(.6+1.1*cos(t),.7+.5*cos(t+1.7),.7+cos(t+3.2));gl_FragColor=vec4(c*(.3+m),1.);}
