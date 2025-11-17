@@ -8,7 +8,8 @@ María Cabrera Vérgez
 
 [- Vídeo de muestra](link)
 
-[- Codesandbox con el código](https://codesandbox.io/p/sandbox/ig2526-s9-parte-2-zmkt9l)
+## Realizado en The Book Of Shaders
+
 ## Tareas a realizar
 
 Como entrega, se plantean dos posibles alternativas:
