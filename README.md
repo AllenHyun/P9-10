@@ -22,6 +22,14 @@ En ambos casos, la documentación explicativa del shader debe incluir la motivac
 
 - [Motivación](#motivación)
 - [Desarrollo](#desarrollo)
+  * [Normalización](#normalización)
+  * [Coordenadas_polares](#coordenadas_polares)
+  * [Ruido](#ruido)
+  * [Ondas](#ondas)
+  * [Líneas_radiales](#líneas_radiales)
+  * [Color](#color)
+  * [Animación](#animación)
+  * [Resultado](#resultado)
 - [Webgrafía](#webgrafía)
   
 
@@ -42,7 +50,7 @@ precision mediump float;
 uniform float u_time;
 uniform vec2 u_resolution;
 ```
-### Normalización de coordenadas
+### Normalización
 
 Posteriormente, se normalizan las coordenadas de los píxeles (gl_FragCoord.xy) y se convierten para entrar en un rango que va de -1 a 1, usando el medio de la pantalla como el centro del origen. Esto es necesario para cuando luego se deba de dibujar los círculos que se van a ir viendo pon pantalla.
 
@@ -50,7 +58,7 @@ Posteriormente, se normalizan las coordenadas de los píxeles (gl_FragCoord.xy) 
     vec2 p=gl_FragCoord.xy/u_resolution*2.-1.;
 ```
 
-### Coordenadas polares
+### Coordenadas_polares
 
 Con esto ya hecho, se cogen las coordenadas obtenidas y se hallan las polares. Esto se hizo porque era más sencillo para trabajar con figuras circulares. Además, se guarda el radio de la figura para más adelante.
 
@@ -74,7 +82,7 @@ Se van a definir varios rayos que estarán alrededor del círculo. La onda se mu
     float w=sin(a*11.+n*6.+u_time*2.);
 ```
 
-# Líneas radiales
+# Líneas_radiales
 
 Una vez con las ondas, se crear líneas repetidas, líneas que son suavizadas con el eso de smoothsteep(). Gracias a w, da la sensación de que estas líneas están vibrando.
 
@@ -91,7 +99,7 @@ Se genera una fase que va a depender del ángulo, del radio y del tiempo. Esta p
 
 ```
 
-### Animación del color
+### Animación 
 
 Para que los colores giren, hace falta que estén. La variable 'c' calcula un coseno con diferentes amplitud y desfase. Los diversos colores van cambiaron entre sí, fluyendo por la pantalla.
 
@@ -101,7 +109,7 @@ Para que los colores giren, hace falta que estén. La variable 'c' calcula un co
 
 Para finalizar, gl_FragColor añade un brillo fase y es quien terminar de crear el efecto circular con ruido que da vueltas. Se combina el color y las franjas para poder generar el fragmento realizado.
 
-### Resultado final
+### Resultado
 
 ``` glsl
     gl_FragColor=vec4(c*(.3+m),1.);
