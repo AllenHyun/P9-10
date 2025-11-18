@@ -4,10 +4,6 @@
 
 María Cabrera Vérgez
 
-## Enlaces
-
-- [Vídeo de muestra](#ejemplo)
-
 ### Realizado en The Book of Shaders
 
 ## Tareas a realizar
@@ -117,6 +113,9 @@ Finalmente, se mezcla el color con la máscara de líneas y se escribe el color 
 ```glsl
 gl_FragColor = vec4(c * (.3 + m), 1.);
 ```
+<img width="280" height="263" alt="image" src="images/Captura de pantalla 2025-11-17 162122.png" />
+<img width="280" height="263" alt="image" src="images/IG gif.gif" />
+
 
 ## Webgrafía
 
