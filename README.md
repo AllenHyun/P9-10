@@ -6,114 +6,118 @@ María Cabrera Vérgez
 
 ## Enlaces
 
-[- Vídeo de muestra](link)
+- [Vídeo de muestra](#ejemplo)
 
-### Realizado en The Book Of Shaders
+### Realizado en The Book of Shaders
 
 ## Tareas a realizar
 
 Como entrega, se plantean dos posibles alternativas:
 
-Integración de shaders para su integración en alguna de las tareas anteriores: S6-7 Sistema planetario o/y S8 Visualización de datos.
-Desarrollo de un shader de fragmentos con patrones generativo, asegurando que sea ejecutable de editor de The Book of Shaders. Se hará entrega de una versión tiny code aceptando propuestas de hasta 512 bytes. Todas aquellas que cumplan ambas condiciones, se utilizarán para componer un reel conjunto a mostrar en RRSS.
-En ambos casos, la documentación explicativa del shader debe incluir la motivación, y una detallada descripción de su desarrollo, con especial énfasis en el desarrollo y citando a las fuentes utilizadas.
+* Integración de shaders para su integración en alguna de las tareas anteriores: S6-7 Sistema planetario o/y S8 Visualización de datos.
+  
+* Desarrollo de un shader de fragmentos con patrones generativo, asegurando que sea ejecutable de editor de The Book of Shaders. Se hará entrega de una versión tiny code aceptando propuestas de hasta 512 bytes. Todas aquellas que cumplan ambas condiciones, se utilizarán para componer un reel conjunto a mostrar en RRSS.
+  
+En ambos casos, la documentación explicativa del shader debe incluir la motivación, y una detallada descripción de su desarrollo, con especial énfasis en el desarrollo y citando a las fuentes utilizada
 
 ## Índice de contenidos
 
 - [Motivación](#motivación)
 - [Desarrollo](#desarrollo)
   * [Normalización](#normalización)
-  * [Coordenadas_polares](#coordenadas_polares)
+  * [Coordenadas polares](#coordenadas-polares)
   * [Ruido](#ruido)
   * [Ondas](#ondas)
-  * [Líneas_radiales](#líneas_radiales)
+  * [Líneas radiales](#líneas-radiales)
   * [Color](#color)
   * [Animación](#animación)
   * [Resultado](#resultado)
 - [Webgrafía](#webgrafía)
-  
-
-## Tareas
 
 ## Motivación
 
-El trabajo empezó por motivado por un shader más grande y en 3D. Tenía la aparencia de ondas que se movían en varias direcciones. Se consiguió replicar, mientras se probaba, una versión del mismo shader. Como la tarea pedía tiny code, se hizo una versión para The Book of Shaders. Si el shader se colocaba en una posición, tenía la aparencia de círculos que salían de un punto y que iban cambiando de color, generando ondas.
+El trabajo comenzó inspirado en un shader más grande y en 3D que generaba ondas desplazándose en varias direcciones. Durante las pruebas se consiguió replicar una versión simplificada en 3D que mantenía parte del comportamiento ondulante. Sin embargo, no era posible eso para el trabajo. Al seguir trabajando con la figura conseguida, se notó que adoptaba una forma donde parecía que eran círculos que se van haciendo más grandes gradualmente, cambiando progresivamente el color.
 
 <img width="280" height="263" alt="image" src="images/ejemplo.png" />
 
+El código original era mucho más largo, pero para adaptarlo a los requisitos fue necesario simplificar y modificar partes del shader. Aunque el resultado final no es idéntico a la idea inicial, sí conserva parte del estilo y movimiento del original. Además, cumple el tamaño establecido, que era de 512 bytes (pesa 511 bytes).
 
 ## Desarrollo
 
-Lo primero que se hace es declarar la variable que va a ocuparse del tiempo, que se encuentra involucrado en la animación, y la variable para el tamaño de la pantalla.
+Lo primero es declarar las variables que controlan el tiempo de la animación (u_time) y la resolución (u_resolution):
 
-``` glsl
+```glsl
 #ifdef GL_ES
 precision mediump float;
 #endif
 uniform float u_time;
 uniform vec2 u_resolution;
 ```
+
 ### Normalización
 
-Posteriormente, se normalizan las coordenadas de los píxeles (gl_FragCoord.xy) y se convierten para entrar en un rango que va de -1 a 1, usando el medio de la pantalla como el centro del origen. Esto es necesario para cuando luego se deba de dibujar los círculos que se van a ir viendo pon pantalla.
+Se normalizan las coordenadas de los píxeles para que queden en el rango [-1, 1], tomando el centro de la pantalla como origen. Esto facilita la generación de figuras circulares.
 
-``` glsl
-    vec2 p=gl_FragCoord.xy/u_resolution*2.-1.;
+```glsl
+vec2 p = gl_FragCoord.xy / u_resolution * 2. - 1.;
 ```
 
-### Coordenadas_polares
+### Coordenadas polares
 
-Con esto ya hecho, se cogen las coordenadas obtenidas y se hallan las polares. Esto se hizo porque era más sencillo para trabajar con figuras circulares. Además, se guarda el radio de la figura para más adelante.
+A partir de las coordenadas normalizadas, se calculan el ángulo (a) y el radio (r). Las coordenadas polares son más adecuadas para trabajar con las estructuras que harán falta para plasmar la idea tal cual.
 
-``` glsl
-    float a=atan(p.y,p.x),r=length(p);
+```glsl
+float a = atan(p.y, p.x), r = length(p);
 ```
 
 ### Ruido
 
-La figura va a tener cierto ruido, así que se calcula n. Esta variable lo que hace es distorsionar la imagen. Para ello se pueden hacer varias cosas. Se trata el ángulo de la figura. Se define una animacoón tranquila, multiplicando u_time por 0.3. Se mezclan el ángulo y el radio, se le da la aparencia de estar girando.
+La variable n introduce una distorsión (ruido) basada en una función que depende del ángulo, el radio y el tiempo. Esto genera un movimiento progresivo en el patrón.
 
-``` glsl
-    float n=fract(sin(dot(vec2(a*4.+u_time*.3,r*5.),vec2(.7,.6)))*4e4);
+```glsl
+float n = fract(sin(dot(vec2(a*4. + u_time*.3, r*5.), vec2(.7, .6))) * 4e4);
 ```
 
-### Ondas 
+### Ondas
 
-Se van a definir varios rayos que estarán alrededor del círculo. La onda se mueve con el tiempo, distorsionada.
+Aquí se define una onda circular que se repite alrededor del centro. Está afectada por el ruido anterior para evitar uniformidad excesiva.
 
-``` glsl
-    float w=sin(a*11.+n*6.+u_time*2.);
+```glsl
+float w = sin(a*11. + n*6. + u_time*2.);
 ```
 
-# Líneas_radiales
+### Líneas radiales
 
-Una vez con las ondas, se crear líneas repetidas, líneas que son suavizadas con el eso de smoothsteep(). Gracias a w, da la sensación de que estas líneas están vibrando.
+Se crean líneas repetidas que rodean el centro. smoothstep() suaviza los bordes y la onda w hace que vibren ligeramente, puesto que el movimiento debe ser lento.
 
-``` glsl
-    float m=smoothstep(.8,-.05,abs(fract((r-w*.07)*26.)-.5));
+```glsl
+float m = smoothstep(.8, -.05, abs(fract((r - w*.07)*26.) - .5));
 ```
 
 ### Color
 
-Se genera una fase que va a depender del ángulo, del radio y del tiempo. Esta parte es la que simula que el color se mueve a lo largo de la pantalla, dando vueltas.
+t define una fase dependiente del ángulo, del radio y del tiempo. Controla el desplazamiento de los colores.
 
-``` glsl
-    float t=fract(a*.4-r*.35-u_time*.7)*7.;
-
+```glsl
+float t = fract(a*.4 - r*.35 - u_time*.7) * 7.;
 ```
 
-### Animación 
+### Animación
 
-Para que los colores giren, hace falta que estén. La variable 'c' calcula un coseno con diferentes amplitud y desfase. Los diversos colores van cambiaron entre sí, fluyendo por la pantalla.
+c calcula el color final usando tres cosenos. Esto produce un flujo continuo de colores que van fluyendo en la figura, cambiándose entre ellos.
 
-``` glsl
-    vec3 c=vec3(.6+1.1*cos(t),.7+.5*cos(t+1.7),.7+cos(t+3.2));
+```glsl
+vec3 c = vec3(.6 + 1.1*cos(t), .7 + .5*cos(t + 1.7), .7 + cos(t + 3.2));
 ```
-
-Para finalizar, gl_FragColor añade un brillo fase y es quien terminar de crear el efecto circular con ruido que da vueltas. Se combina el color y las franjas para poder generar el fragmento realizado.
 
 ### Resultado
 
-``` glsl
-    gl_FragColor=vec4(c*(.3+m),1.);
+Finalmente, se mezcla el color con la máscara de líneas y se escribe el color del fragmento:
+
+```glsl
+gl_FragColor = vec4(c * (.3 + m), 1.);
 ```
+
+## Webgrafía
+
+
