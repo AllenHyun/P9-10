@@ -37,7 +37,10 @@ En ambos casos, la documentación explicativa del shader debe incluir la motivac
 
 ## Motivación
 
-El trabajo empezó por motivado por un shader más grande y en 3D. Tenía la aparencia de ondas que se movían en varias direcciones. Se consiguió replicar, mientras se probaba, una versión del mismo shader. Como la tarea pedía tiny code, se hizo una versión para The Book of Shaders. Si el shader se colocaba en una posición, tenía la aparencia de círculos que salían de un punto y que iban cambiando de color.
+El trabajo empezó por motivado por un shader más grande y en 3D. Tenía la aparencia de ondas que se movían en varias direcciones. Se consiguió replicar, mientras se probaba, una versión del mismo shader. Como la tarea pedía tiny code, se hizo una versión para The Book of Shaders. Si el shader se colocaba en una posición, tenía la aparencia de círculos que salían de un punto y que iban cambiando de color, generando ondas.
+
+<img width="280" height="263" alt="image" src="https://github.com/user-attachments/assets/753b8ff9-74f7-4320-809b-eff69ef7d89b" />
+
 
 ## Desarrollo
 
