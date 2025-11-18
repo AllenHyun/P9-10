@@ -119,11 +119,11 @@ gl_FragColor = vec4(c * (.3 + m), 1.);
 
 ## Webgrafía
 
-[Idea original](https://farazzshaikh.github.io/THREE-CustomShaderMaterial/#/points)
-[Vídeo sobre shaders](https://www.youtube.com/watch?v=C8Cuwq1eqDw)
-[Shaders](https://jespitiaa.medium.com/profundizando-en-los-shaders-en-three-js-2df76188f163)
-[Teoría de la práctica](https://github.com/otsedom/otsedom.github.io/tree/main/IG/S9)
-[The Book of Shaders](https://thebookofshaders.com)
+- [Idea original](https://farazzshaikh.github.io/THREE-CustomShaderMaterial/#/points)
+- [Vídeo sobre shaders](https://www.youtube.com/watch?v=C8Cuwq1eqDw)
+- [Shaders](https://jespitiaa.medium.com/profundizando-en-los-shaders-en-three-js-2df76188f163)
+- [Teoría de la práctica](https://github.com/otsedom/otsedom.github.io/tree/main/IG/S9)
+- [The Book of Shaders](https://thebookofshaders.com)
 
 
 
